@@ -3,6 +3,8 @@ CFLAGS += -m32 -g -O1 -ffreestanding
 SRCS_C := $(wildcard *.c)
 SRCS_AS := $(wildcard *.S)
 HEADERS := $(wildcard *.h)
+INCL	= $(wildcard /lib/*.c)
+
 OBJS_C := $(patsubst %.c, %.o, $(SRCS_C))
 OBJS_AS := $(patsubst %.S, %.o, $(SRCS_AS))
 
