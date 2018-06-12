@@ -1,6 +1,6 @@
 #include "decls.h"
 #include "multiboot.h"
-#include <stdio.h>
+#include "lib/string.h"
 
 #define BUF_SZ 256
 
@@ -9,7 +9,7 @@ void kmain(const multiboot_info_t *mbi) {
     if (mbi->flags) {
         char buf[BUF_SZ] = "cmdline: ";
         char *cmdline = (void *) mbi->cmdline;
-        strncpy(buf, cmdline, BUF_SZ);
+        strlcat(buf, cmdline, BUF_SZ);
         vga_write(buf, 9, 0x07);
     }
 }
