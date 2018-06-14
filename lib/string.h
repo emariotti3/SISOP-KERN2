@@ -50,11 +50,11 @@ size_t strspn(const char *, const char *);
 char *strstr(const char *, const char *);
 void *memset(void *, int, size_t);
 size_t strlen(const char *);
+//char *strncat(char *dest, const char *src, size_t n);
 
 /* Extensions. */
 size_t strlcpy(char *, const char *, size_t);
 size_t strlcat(char *, const char *, size_t);
 char *strtok_r(char *, const char *, char **);
-size_t strnlen(const char *, size_t);
 
 #endif /* lib/string.h */
