@@ -18,7 +18,8 @@ void kmain(const multiboot_info_t *mbi) {
         strlcat(buf, cmdline, BUF_SZ);
         vga_write(buf, 9, 0x07);
     }
-    if (fmt_int((mbi->mem_lower + mbi->mem_upper) >> 10 , tmp, sizeof tmp)) { //TOTAL
+    //if (mbi->flags & MEM_PRESENT) { TODO: chequear los flags
+    if (fmt_int((mbi->mem_lower + mbi->mem_upper) >> 10 , tmp, sizeof tmp)) {
         strlcat(mem, tmp, sizeof mem);
         strlcat(mem, "MiB total", sizeof mem);
     }
@@ -32,4 +33,5 @@ void kmain(const multiboot_info_t *mbi) {
         strlcat(mem, "KiB extended).", sizeof mem);
     }
     vga_write(mem, 10, 0x07);
+
 }
