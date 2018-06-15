@@ -18,14 +18,18 @@ void kmain(const multiboot_info_t *mbi) {
         strlcat(buf, cmdline, BUF_SZ);
         vga_write(buf, 9, 0x07);
     }
-    /*if (fmt_int(0 , tmp, sizeof tmp)) { //TOTAL
+    if (fmt_int((mbi->mem_lower + mbi->mem_upper) >> 10 , tmp, sizeof tmp)) { //TOTAL
         strlcat(mem, tmp, sizeof mem);
         strlcat(mem, "MiB total", sizeof mem);
     }
-    if (fmt_int(mbi->mem_lower + mbi->mem_upper , tmp, sizeof tmp)) {
+    if (fmt_int(mbi->mem_lower, tmp, sizeof tmp)) {
         strlcat(mem, "(", sizeof mem);
         strlcat(mem, tmp, sizeof mem);
         strlcat(mem, "KiB base, ", sizeof mem);
-    }*/
+    }
+    if (fmt_int(mbi->mem_upper, tmp, sizeof tmp)) {
+        strlcat(mem, tmp, sizeof mem);
+        strlcat(mem, "KiB extended).", sizeof mem);
+    }
     vga_write(mem, 10, 0x07);
 }

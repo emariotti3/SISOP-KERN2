@@ -2,6 +2,7 @@
 #define KERN2_DECL_H
 
 #include <stdint.h>
+#include <stddef.h>
 #include <stdbool.h>
 #include "lib/string.h"
 
