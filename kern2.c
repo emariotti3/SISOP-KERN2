@@ -3,14 +3,11 @@
 #include "lib/string.h"
 
 #define BUF_SZ 125
-#define SHIFT_MIB 11
-
 char mem[256] = "Physical memory: ";
 char tmp[64] = "";
 
-
-
 void kmain(const multiboot_info_t *mbi) {
+
     vga_write("kern2 loading.............", 8, 0x70);
     if (mbi->flags) {
         char buf[BUF_SZ] = "cmdline: ";
@@ -19,6 +16,7 @@ void kmain(const multiboot_info_t *mbi) {
         vga_write(buf, 9, 0x07);
     }
     //if (mbi->flags & MEM_PRESENT) { TODO: chequear los flags
+
     if (fmt_int((mbi->mem_lower + mbi->mem_upper) >> 10 , tmp, sizeof tmp)) {
         strlcat(mem, tmp, sizeof mem);
         strlcat(mem, "MiB total", sizeof mem);
