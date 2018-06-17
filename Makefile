@@ -1,4 +1,4 @@
-CFLAGS := -std=c99 -Wall -Wextra -Wpedantic -m32 -fasm
+CFLAGS := -std=c99 -Wall -Wextra -Wpedantic -m32 -fasm -fno-omit-frame-pointer
 CFLAGS_EXTRA := -g -O1 -ffreestanding
 CPPFLAGS := -nostdlibinc -idirafter lib
 LIB = lib

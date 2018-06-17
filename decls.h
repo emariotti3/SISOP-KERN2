@@ -14,4 +14,11 @@ void vga_write(const char *s, int8_t linea, uint8_t color);
 // no haber espacio suficiente no hace nada y devuelve false.
 bool fmt_int(uint64_t val, char *s, size_t bufsize);
 
+void two_stacks_c();
+
+void two_stacks();
+
+// Realiza una llamada a "entry" sobre el stack proporcionado.
+void task_exec(uintptr_t entry, uintptr_t stack);
+
 #endif
