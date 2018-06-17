@@ -39,7 +39,11 @@ void two_stacks_c() {
     // Primera llamada usando task_exec().
     //task_exec((uintptr_t) vga_write, (uintptr_t) stack1):
 
-    asm("call task_exec;"
+    asm("push %1\n\t"
+      "push %0\n\t"
+      "call task_exec\n\t"
+      "add $4, %%esp\n\t"
+      "add $4, %%esp\n\t"
       : /* no outputs */
       : "r"((uintptr_t) stack1), "r"((uintptr_t) vga_write));
 
