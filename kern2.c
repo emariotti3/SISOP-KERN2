@@ -11,13 +11,13 @@ void kmain(const multiboot_info_t *mbi) {
 }
 
 static uint8_t stack1[USTACK_SIZE] __attribute__((aligned(4096)));
-//static uint8_t stack2[USTACK_SIZE] __attribute__((aligned(4096)));
+static uint8_t stack2[USTACK_SIZE] __attribute__((aligned(4096)));
 
 
 void two_stacks_c() {
     // Inicializar al *tope* de cada pila.
     uintptr_t *a = stack1;
-    //uintptr_t *b = stack2;
+    uintptr_t *b = stack2;
 
     // Preparar, en stack1, la llamada:
     //vga_write("vga_write() from stack1", 15, 0x57);
@@ -31,16 +31,16 @@ void two_stacks_c() {
 
     // AYUDA 3: para esta segunda llamada, usar esta forma de
     // asignación alternativa:
-    //b -= 3;
-    //b[0] = ...
-    //b[1] = ...
-    //b[2] = ...
+    b -= 3;
+    b[0] = (uintptr_t) "vga_write() from stack2";
+    b[1] = 16;
+    b[2] = 0xD0;
 
     // Primera llamada usando task_exec().
     //task_exec((uintptr_t) vga_write, (uintptr_t) stack1):
 
-    asm("push %1\n\t"
-      "push %0\n\t"
+    asm("push %0\n\t"
+      "push %1\n\t"
       "call task_exec\n\t"
       "add $4, %%esp\n\t"
       "add $4, %%esp\n\t"
@@ -50,7 +50,13 @@ void two_stacks_c() {
     // Segunda llamada con ASM directo. Importante: no
     // olvidar restaurar el valor de %esp al terminar, y
     // compilar con: -fasm -fno-omit-frame-pointer.
-    //asm("...; call *%1; ..."
+    //"push %0\n\t"
+    //"push 4(%0)\n\t"
+    //"push 8(%0)\n\t"
+    //  "call *%1\n\t"
+    //  "add $4, %%esp\n\t"
+    //  "add $4, %%esp\n\t"
+    //  "add $4, %%esp\n\t"
     //    : /* no outputs */
-    //    : "r"(s2), "r"(vga_write));
+    //    : "r"(stack2), "r"(vga_write));
 }
