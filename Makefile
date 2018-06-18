@@ -1,5 +1,5 @@
 CFLAGS := -std=c99 -Wall -Wextra -Wpedantic -m32 -fasm -fno-omit-frame-pointer
-CFLAGS_EXTRA := -g -O1 -ffreestanding
+CFLAGS_EXTRA := -g -O0 -ffreestanding
 CPPFLAGS := -nostdlibinc -idirafter lib
 LIB = lib
 LDLIBS := -lgcc

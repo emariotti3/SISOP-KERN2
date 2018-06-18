@@ -50,13 +50,13 @@ void two_stacks_c() {
     // Segunda llamada con ASM directo. Importante: no
     // olvidar restaurar el valor de %esp al terminar, y
     // compilar con: -fasm -fno-omit-frame-pointer.
-    //"push %0\n\t"
-    //"push 4(%0)\n\t"
-    //"push 8(%0)\n\t"
-    //  "call *%1\n\t"
-    //  "add $4, %%esp\n\t"
-    //  "add $4, %%esp\n\t"
-    //  "add $4, %%esp\n\t"
-    //    : /* no outputs */
-    //    : "r"(stack2), "r"(vga_write));
+    asm("push -4(%0)\n\t"
+      "push -8(%0)\n\t"
+      "push -12(%0)\n\t"
+      "call *%1\n\t"
+      "add $4, %%esp\n\t"
+      "add $4, %%esp\n\t"
+      "add $4, %%esp\n\t"
+        : /* no outputs */
+        : "r"(stack2), "r"((uintptr_t) vga_write));
 }
