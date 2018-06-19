@@ -21,4 +21,9 @@ void two_stacks();
 // Realiza una llamada a "entry" sobre el stack proporcionado.
 void task_exec(uintptr_t entry, uintptr_t stack);
 
+//Declara vga_write2 con atributo regparam, para que
+//reciba argumentos via registros de la CPU.
+void __attribute__((regparm(3)))
+vga_write2(const char *s, int8_t linea, uint8_t color);
+
 #endif
