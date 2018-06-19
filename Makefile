@@ -35,6 +35,7 @@ $(LIB)/%.o : $(LIB)/%.c
 
 $(TARGET): $(OBJS_C) $(OBJS_AS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	objdump -d $@ >$@.asm
 	#ld -m elf_i386 -Ttext 0x100000 --entry=_start $^ $(LIBGCC)  -o $@
 	# Verificar imagen Multiboot v1.
 	#grub-file --is-x86-multiboot $@

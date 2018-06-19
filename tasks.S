@@ -6,20 +6,15 @@ task_exec:
         movl %esp, %ebp
 
         push %esi            //Guardo callee-saved.
-        push %edi            //Guardo callee-saved.
-        leal (%esp), %edi    //Guardo el sp actual en un callee-saved.
 
-        movl 16(%esp), %esi  //Guardo el puntero a la funcion en %esi.
+        movl 12(%esp), %esi  //Guardo el puntero a la funcion en %esi.
 
-        movl 20(%esp), %esp  //Cambio el sp para que apunte al stack recibido.
-        movl %esp, %ebp      //Cambio el fp para que apunte al stack recibido.
+        movl 16(%esp), %esp  //Cambio el sp para que apunte al stack recibido.
 
         call *%esi           //push %eip + jmp.
 next:
-        leal (%edi), %esp    //Restauro sp.
-
-        pop %edi             //Restauro callee-saved.
+        leal -4(%ebp), %esp  //Restauro sp considerando que hice un push extra.
         pop %esi             //Restauro callee-saved.
 
-        popl %ebp           //Restauro fp.
+        popl %ebp            //Restauro fp.
         ret
