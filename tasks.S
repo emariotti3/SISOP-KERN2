@@ -14,8 +14,28 @@ task_exec:
 
         call *%esi           //push %eip + jmp.
 
-        leal -4(%ebp), %esp  //Restauro sp considerando que hice un push extra.
+        leal -4(%ebp), %esp  //Restauro sp considerando que hice push de %esi.
         pop %esi             //Restauro callee-saved.
 
         popl %ebp            //Restauro fp.
         ret
+
+.globl task_swap
+task_swap:
+
+        push %ebx           //Guardo en el stack de la tarea actual
+        push %esi           //los callee saved registers.
+        push %edi
+        push %ebp
+
+        mov 24(%esp), %eax //Guardo en %eax la direccion de la variable esp.
+        mov %esp, %edx     //Guardo en %edx el valor actual del sp.
+        mov (%eax), %esp   //Asigno a %esp la direccion del nuevo stack.
+        mov %edx, (%eax)   //Guardo el viejo sp en la la variable esp.
+
+        pop %ebp
+        pop %edi            //Restauro los registros de la nueva
+        pop %esi            //tarea en ejecución.
+        pop %ebx
+
+        ret                 //Pop + jmp al return address de la nueva tarea.

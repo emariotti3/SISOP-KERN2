@@ -1,6 +1,5 @@
 #include "decls.h"
 
-
 #define COUNTLEN 20
 #define TICKS (1ULL << 15)
 #define DELAY(x) (TICKS << (x))
@@ -12,11 +11,9 @@ static uintptr_t esp;
 static uint8_t stack1[USTACK_SIZE] __attribute__((aligned(4096)));
 static uint8_t stack2[USTACK_SIZE] __attribute__((aligned(4096)));
 
-
 static void yield() {
     if (esp)
-        return;
-        //task_swap(&esp);
+        task_swap(&esp);
 }
 
 static void contador_yield(unsigned lim, uint8_t linea, char color) {
@@ -45,33 +42,32 @@ static void contador_yield(unsigned lim, uint8_t linea, char color) {
             *buf++ = color;
         }
 
-        yield();
+        //yield();
     }
 }
 
 void contador_run() {
     // Configurar stack1 y stack2 con los valores apropiados.
-    uintptr_t *a = stack1 + USTACK_SIZE;
-    uintptr_t *b = stack2 + USTACK_SIZE;
+    uintptr_t *a = (uintptr_t*) stack1 + USTACK_SIZE;
 
-     //Inicializo el stack 1 con los argumentos de contador_yield:
-    *(a--) = 100;
-    *(a--) = 0;
-    *(a--) = 0x2F;
 
-    b-=7;
+    uintptr_t *b = (uintptr_t*) stack2 + USTACK_SIZE;
 
-    b[0] = 100;
-    b[1] = 1;
-    b[2] = 0x4F;
-
-    //Inicializo direccion de retorno para primer ciclo:
-    b[3] = (uintptr_t)contador_yield;
+    *(--a) = 0x2F;
+    *(--a) = 0;
+    *(--a) = 100;
 
     // Actualizar la variable estática ‘esp’ para que apunte
     // al del segundo contador.
-    esp = *b;
+    //*(--b) = (uintptr_t) contador_yield;
+    //*(--b) = 0;
+    //*(--b) = 0;
+    //*(--b) = 0;
+    //*(--b) = 0; 
+    *(--b) = 0x4F;
+    *(--b) = 1;
+    *(--b) = 100;
 
     // Lanzar el primer contador con task_exec.
-    task_exec((uintptr_t)contador_yield,(uintptr_t)stack1);
+    task_exec((uintptr_t) contador_yield, (uintptr_t) a);
 }

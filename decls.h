@@ -26,11 +26,4 @@ void task_exec(uintptr_t entry, uintptr_t stack);
 void __attribute__((regparm(3)))
 vga_write2(const char *s, int8_t linea, uint8_t color);
 
-// Pone en ejecución la tarea cuyo stack está en ‘*esp’, cuyo
-// valor se intercambia por el valor actual de %esp. Guarda y
-// restaura todos los callee-saved registers.
-void task_swap(uintptr_t *esp);
-
-void contador_run();
-
 #endif

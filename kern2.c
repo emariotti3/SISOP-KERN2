@@ -8,7 +8,7 @@ void kmain(const multiboot_info_t *mbi) {
 
     two_stacks();
     two_stacks_c();
-    //contador_run();  // Nueva llamada ej. kern2-swap.
+    contador_run();  // Nueva llamada ej. kern2-swap.
 
     vga_write2("Funciona vga_write2?", 18, 0xE0);
 }
@@ -40,7 +40,6 @@ void two_stacks_c() {
 
     // Primera llamada usando task_exec().
     task_exec((uintptr_t) vga_write, (uintptr_t) a);
-
 
     // Segunda llamada con ASM directo. Importante: no
     // olvidar restaurar el valor de %esp al terminar, y
