@@ -1,3 +1,4 @@
+//tasks.S
 .text
 .globl task_exec
 task_exec:
@@ -12,7 +13,7 @@ task_exec:
         movl 16(%esp), %esp  //Cambio el sp para que apunte al stack recibido.
 
         call *%esi           //push %eip + jmp.
-next:
+
         leal -4(%ebp), %esp  //Restauro sp considerando que hice un push extra.
         pop %esi             //Restauro callee-saved.
 
