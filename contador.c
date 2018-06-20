@@ -48,25 +48,27 @@ static void contador_yield(unsigned lim, uint8_t linea, char color) {
 
 void contador_run() {
     // Configurar stack1 y stack2 con los valores apropiados.
-    uintptr_t *a = (uintptr_t*) stack1 + USTACK_SIZE;
-
-
-    uintptr_t *b = (uintptr_t*) stack2 + USTACK_SIZE;
+    uint8_t *aux_a = stack1 + USTACK_SIZE;
+    uint8_t *aux_b = stack2 + USTACK_SIZE;
+    uintptr_t *a = (uintptr_t*)aux_a;
+    uintptr_t *b = (uintptr_t*)aux_b;
 
     *(--a) = 0x2F;
     *(--a) = 0;
     *(--a) = 100;
 
-    // Actualizar la variable estática ‘esp’ para que apunte
-    // al del segundo contador.
     //*(--b) = (uintptr_t) contador_yield;
     //*(--b) = 0;
     //*(--b) = 0;
     //*(--b) = 0;
-    //*(--b) = 0; 
-    *(--b) = 0x4F;
+    //*(--b) = 0;
+    //*(--b) = 0x4F;
     *(--b) = 1;
     *(--b) = 100;
+
+    // Actualizar la variable estática ‘esp’ para que apunte
+    // al del segundo contador.
+    esp = *b;
 
     // Lanzar el primer contador con task_exec.
     task_exec((uintptr_t) contador_yield, (uintptr_t) a);
