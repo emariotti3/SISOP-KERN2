@@ -1,5 +1,7 @@
 //stacks.S
+#ifndef USTACK_SIZE
 #define USTACK_SIZE 4096
+#endif
 
 .data
         .align 4096

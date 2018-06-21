@@ -33,7 +33,7 @@ $(LIB)/%.o : $(LIB)/%.c
 		$(CC) -c $(CFLAGS) $(CFLAGS_EXTRA) $(CPPFLAGS) $< -o $@
 
 
-$(TARGET): $(OBJS_C) $(OBJS_AS)
+$(TARGET): $(OBJS_AS) $(OBJS_C)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 	#objdump -d $@ >$@.asm
 

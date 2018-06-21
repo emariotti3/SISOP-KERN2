@@ -9,5 +9,9 @@ vga_write2:
 
         call vga_write
 
+        add $4, %esp
+        add $4, %esp
+        add $4, %esp
+
         leave
         ret

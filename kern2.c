@@ -1,21 +1,27 @@
 #include "decls.h"
 #include "multiboot.h"
+#include "interrupts.h"
 
+#ifndef USTACK_SIZE
 #define USTACK_SIZE 4096
+#endif
+
+static uint8_t stack1[USTACK_SIZE] __attribute__((aligned(4096)));
+static uint8_t stack2[USTACK_SIZE] __attribute__((aligned(4096)));
 
 void kmain(const multiboot_info_t *mbi) {
     vga_write("kern2 loading.............", 8, 0x70);
 
     two_stacks();
     two_stacks_c();
-    contador_run();  // Nueva llamada ej. kern2-swap.
+    //contador_run();  // Nueva llamada ej. kern2-swap.
+
+    // Código ejercicio kern2-idt.
+    idt_init();   // (a)
+    asm("int3");  // (b)
 
     vga_write2("Funciona vga_write2?", 18, 0xE0);
 }
-
-static uint8_t stack1[USTACK_SIZE] __attribute__((aligned(4096)));
-static uint8_t stack2[USTACK_SIZE] __attribute__((aligned(4096)));
-
 
 void two_stacks_c() {
     // Inicializar al *tope* de cada pila.
