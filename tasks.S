@@ -28,14 +28,14 @@ task_swap:
         push %edi
         push %ebp
 
-        mov 24(%esp), %eax //Guardo en %eax la direccion de la variable esp.
+        mov 20(%esp), %eax //Guardo en %eax la direccion de la variable esp.
         mov %esp, %edx     //Guardo en %edx el valor actual del sp.
         mov (%eax), %esp   //Asigno a %esp la direccion del nuevo stack.
         mov %edx, (%eax)   //Guardo el viejo sp en la la variable esp.
 
-        pop %ebp
-        pop %edi            //Restauro los registros de la nueva
-        pop %esi            //tarea en ejecución.
+        pop %ebp           //Restauro los registros de la nueva
+        pop %edi           //tarea en ejecución. 
+        pop %esi
         pop %ebx
 
         ret                 //Pop + jmp al return address de la nueva tarea.

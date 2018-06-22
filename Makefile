@@ -35,7 +35,7 @@ $(LIB)/%.o : $(LIB)/%.c
 
 $(TARGET): $(OBJS_AS) $(OBJS_C)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
-	#objdump -d $@ >$@.asm
+	objdump -d $@ >$@.asm
 
 clean:
 	rm -f kern2 *.o core *.asm
