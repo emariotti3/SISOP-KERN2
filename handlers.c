@@ -31,10 +31,12 @@ void timer() {
 #define UNLOCK_SHIFT 0xFE
 #define SHIFT 0x2A
 #define DELTA_CAPS -32
+#define KEY_RELEASE 0x80
 
 static const uint8_t KBD_PORT = 0x60;
 static uint8_t ctrl_alt_shift = 0;
 
+#define isletter(C) (C>=0x61 && C<=0x7A)
 
 static char klayout[128] = {
     0,   0,   '1', '2', '3', '4', '5', '6', '7', '8',             // 0-9
@@ -56,30 +58,26 @@ void keyboard() {
 
     asm volatile("inb %1,%0" : "=a"(code) : "n"(KBD_PORT));
 
-    if (code >= sizeof(klayout) || !klayout[code])
+    if (code >= sizeof(klayout) && (!(code & KEY_RELEASE) && !klayout[code]))
         return;
 
     //Key was released
-    if(code & 0x80){
-        if((code - 128)==SHIFT){
+    if(code & KEY_RELEASE){
+        if((code - KEY_RELEASE)==SHIFT){
           //Shift was released
           ctrl_alt_shift = ctrl_alt_shift & UNLOCK_SHIFT;
         }
     }else{
+        //Key was pressed
         if(code==SHIFT){
             //Shift is pressed
             ctrl_alt_shift = ctrl_alt_shift | LOCK_SHIFT;
         }else{
-            int delta = 0;
-            if((ctrl_alt_shift & LOCK_SHIFT) && (klayout[code]<=0x7A) && (klayout[code]>=0x61)){
-                delta = DELTA_CAPS;
+            char character = klayout[code];
+            if((ctrl_alt_shift & LOCK_SHIFT) && isletter(klayout[code])){
+                character += DELTA_CAPS;
             }
-            if (idx == 80) {
-                while (idx--)
-                    chars[idx] = ' ';
-            }
-
-            chars[idx++] = klayout[code] + delta;
+            chars[idx++] = character;
             vga_write(chars, 19, 0x0A);
         }
     }
