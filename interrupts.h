@@ -3,12 +3,21 @@
 
 #include <stdint.h>
 
-// interrupts.c
+//interrupts.c
 void idt_init(void);
+
 void idt_install(uint8_t n, void (*handler)(void));
+
+void irq_init();
 
 // idt_entry.S
 void breakpoint(void);
+
+void timer_asm(void);
+
+void ack_irq(void);
+
+void divzero(void);
 
 // IDTR Register (see IA32-3A, §6.10 INTERRUPT DESCRIPTOR TABLE).
 struct IDTR {

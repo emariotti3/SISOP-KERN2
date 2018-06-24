@@ -26,4 +26,7 @@ void task_exec(uintptr_t entry, uintptr_t stack);
 void __attribute__((regparm(3)))
 vga_write2(const char *s, int8_t linea, uint8_t color);
 
+void __attribute__((regparm(2)))
+vga_write_cyan(const char *s, int8_t linea);
+
 #endif

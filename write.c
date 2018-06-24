@@ -7,6 +7,10 @@ static volatile void* const VGABUF = (volatile char*) 0xb8000;
 #define STEP 2
 #define BASE 10
 
+void vga_write_cyan(const char *s, int8_t linea) {
+    vga_write(s, linea, 0xB0);
+}
+
 void vga_write(const char *s, int8_t linea, uint8_t color) {
     volatile char *buf = VGABUF;
     if(linea >= VGA_FILAS) return;
