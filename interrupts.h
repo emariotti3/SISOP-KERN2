@@ -19,6 +19,8 @@ void ack_irq(void);
 
 void divzero(void);
 
+void keyboard_asm(void);
+
 // IDTR Register (see IA32-3A, §6.10 INTERRUPT DESCRIPTOR TABLE).
 struct IDTR {
     uint16_t limit;  // Limit

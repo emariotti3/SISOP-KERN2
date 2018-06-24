@@ -17,7 +17,7 @@ void kmain(const multiboot_info_t *mbi) {
 
     two_stacks();
     two_stacks_c();
-    //contador_run();
+    contador_run();
 
     idt_init();
     irq_init();

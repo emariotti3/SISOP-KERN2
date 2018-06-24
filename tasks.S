@@ -34,7 +34,7 @@ task_swap:
         mov %edx, (%eax)   //Guardo el viejo sp en la la variable esp.
 
         pop %ebp           //Restauro los registros de la nueva
-        pop %edi           //tarea en ejecución. 
+        pop %edi           //tarea en ejecución.
         pop %esi
         pop %ebx
 

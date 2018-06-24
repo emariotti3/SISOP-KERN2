@@ -38,9 +38,9 @@ void irq_init() {
 
     // (2) Instalar manejadores.
     idt_install(T_TIMER, timer_asm);
-    idt_install(T_KEYBOARD, ack_irq);
+    idt_install(T_KEYBOARD, keyboard_asm);
     idt_install(T_DIVIDE, divzero);
-    
+
     // (3) Habilitar interrupciones.
     asm("sti");
 }
@@ -65,7 +65,7 @@ void idt_install(uint8_t n, void (*handler)(void)) {
     idt[n].type = STS_IG32;
     idt[n].segment = KSEG_CODE;
 
-    idt[n].off_15_0 = addr & 0x7FFF;
+    idt[n].off_15_0 = addr & 0xFFFF;
     idt[n].off_31_16 = addr >> 16;
 
     idt[n].present = 1;

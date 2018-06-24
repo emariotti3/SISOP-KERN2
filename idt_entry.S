@@ -58,3 +58,18 @@ divzero:
     pop %edx
     pop %eax
     iret
+
+.globl keyboard_asm
+keyboard_asm:
+    // Guardar registros.
+    push %eax
+    push %edx
+    push %ecx
+
+    call keyboard
+
+    // Restaurar registros.
+    pop %ecx
+    pop %edx
+    pop %eax
+    jmp ack_irq
