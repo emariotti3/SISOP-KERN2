@@ -16,6 +16,12 @@ static void yield() {
         task_swap(&esp);
 }
 
+static void exit() {
+    uintptr_t *tmp = esp;
+    esp = NULL;
+    task_swap(&tmp);
+}
+
 static void contador_yield(unsigned lim, uint8_t linea, char color) {
     char counter[COUNTLEN] = {'0'};  // ASCII digit counter (RTL).
 
@@ -44,6 +50,8 @@ static void contador_yield(unsigned lim, uint8_t linea, char color) {
 
         yield();
     }
+    //Llamado explicito a exit:
+    //if(esp) exit();
 }
 
 void contador_run() {
@@ -59,13 +67,13 @@ void contador_run() {
 
     *(--b) = 0x4F;
     *(--b) = 1;
-    *(--b) = 100;
-    *(--b) = (uintptr_t) task_swap;       //Direccion de relleno para que contador_yield encuentre sus parametros.
-    *(--b) = (uintptr_t) contador_yield;  //Direccion de retorno inicial para el contador 2.
+    *(--b) = 50;
+    *(--b) = (uintptr_t) exit;            //Direccion de retorno de contador_yield.
+    *(--b) = (uintptr_t) contador_yield;  //Direccion de retorno de yield.
     *(--b) = 0;                           //Inicializo %ebx.
     *(--b) = 0;                           //Inicializo %esi.
     *(--b) = 0;                           //Inicializo %edi.
-    *(--b) = (uintptr_t*)aux_b;           //Inicializo %ebp en la base de stack2.
+    *(--b) = (uintptr_t*)aux_b;           //Inicializo %ebp en el tope de stack2.
 
     // Actualizar la variable estática ‘esp’ para que apunte
     // al del segundo contador.
@@ -73,4 +81,6 @@ void contador_run() {
 
     // Lanzar el primer contador con task_exec.
     task_exec((uintptr_t) contador_yield, (uintptr_t) a);
+
+
 }
