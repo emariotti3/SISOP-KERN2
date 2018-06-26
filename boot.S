@@ -2,7 +2,9 @@
 
 #include "multiboot.h"
 
+#ifndef KSTACK_SIZE
 #define KSTACK_SIZE 8192
+#endif
 
 .align 4
 multiboot:
