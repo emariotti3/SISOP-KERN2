@@ -47,7 +47,7 @@ static void contador_yield(unsigned lim, uint8_t linea, char color) {
             *buf++ = *c;
             *buf++ = color;
         }
-
+        //Concurrencia cooperativa con yield:
         //yield();
     }
     //Llamado explicito a exit:
