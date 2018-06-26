@@ -31,19 +31,22 @@ breakpoint:
 
 .globl timer_asm
 timer_asm:
-    // Guardar registros.
-    push %eax
-    push %edx
-    push %ecx
-
+    // Guardar registros e invocar handler
+    pusha
     call timer
 
-    // Restaurar registros.
-    pop %ecx
-    pop %edx
-    pop %eax
+    // Ack *antes* de llamar a sched()
+    movl $ACK_IRQ, %eax
+    outb %al, $PIC1
 
-    jmp ack_irq
+    // Llamada a sched con argumento
+    push %esp
+    call sched
+
+    // Retornar (si se volvió de sched)
+    addl $4, %esp
+    popa
+    iret
 
 .global divzero
 divzero:

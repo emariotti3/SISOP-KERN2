@@ -17,7 +17,9 @@ void kmain(const multiboot_info_t *mbi) {
 
     two_stacks();
     two_stacks_c();
-    contador_run();
+    //contador_run();
+    sched_init();
+    contador_spawn();
 
     idt_init();
     irq_init();
@@ -28,6 +30,8 @@ void kmain(const multiboot_info_t *mbi) {
         : "0"(18), "1"(0xE0), "b"(0), "d"(0));
 
     vga_write2("Funciona vga_write2?", 18, 0xE0);
+
+
 }
 
 void two_stacks_c() {

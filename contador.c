@@ -48,7 +48,7 @@ static void contador_yield(unsigned lim, uint8_t linea, char color) {
             *buf++ = color;
         }
 
-        yield();
+        //yield();
     }
     //Llamado explicito a exit:
     //if(esp) exit();
@@ -81,6 +81,23 @@ void contador_run() {
 
     // Lanzar el primer contador con task_exec.
     task_exec((uintptr_t) contador_yield, (uintptr_t) a);
+}
 
 
+static void contador1() {
+    contador_yield(50000000, 2, 0x2F);
+}
+
+static void contador2() {
+    contador_yield(50000000, 3, 0x6F);
+}
+
+static void contador3() {
+    contador_yield(50000000, 4, 0x4F);
+}
+
+void contador_spawn() {
+    spawn(contador1);
+    spawn(contador2);
+    spawn(contador3);
 }
