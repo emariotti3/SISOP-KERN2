@@ -9,7 +9,6 @@ static const uint8_t KSEG_CODE = 8;
 static struct Task Tasks[MAX_TASK];
 static struct Task *current;
 
-
 void sched_init() {
     Tasks[0].status = RUNNING;
     current = &Tasks[0];
@@ -22,6 +21,7 @@ void spawn(void (*entry)(void)) {
 
     Tasks[i].status = READY;
 
+    *(--reg_ptr) = task_kill;
     *(--reg_ptr) = 0x0200;
     *(--reg_ptr) = KSEG_CODE;
     *(--reg_ptr) = entry;
@@ -44,14 +44,16 @@ void sched(struct TaskFrame *tf) {
     struct Task *new = old;
 
     bool found = false;
-    while(!found){
+    for(int i = 0;!found && i<MAX_TASK; i++){
         new++;
         if(new==old) new++;
         if (new >= (Tasks+MAX_TASK)) new=Tasks;
         found = (new->status == READY);
     }
 
-    old->status = READY;
+    if(!found) return;
+
+    old->status = tf? READY : FREE;
     old->frame = tf;
 
     current = new;
@@ -63,4 +65,8 @@ void sched(struct TaskFrame *tf) {
     :
     : "g"(current->frame)
     : "memory");
+}
+
+void task_kill(){
+    sched(NULL);
 }

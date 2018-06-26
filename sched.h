@@ -24,6 +24,7 @@ struct TaskFrame {
     uint16_t cs;
     uint16_t padding;
     uint32_t eflags;
+    uint32_t kill_fn;
 } __attribute__((packed));
 
 struct Task {
@@ -31,5 +32,7 @@ struct Task {
     enum TaskStatus status;
     struct TaskFrame *frame;
 };
+
+void task_kill();
 
 #endif //SCHED_H
